@@ -33,7 +33,7 @@ function updateInputDimensions() {
 		for(var i=0; i<rows; ++i) {
 			htmlMatrix.push([]);
 			for(var j=0; j<cols; ++j) {
-				inputArea.innerHTML += "<textarea id='matrix_"+i+"_"+j+"' style='width:40px; height:40px; resize:none;'></textarea>";
+				inputArea.innerHTML += "<textarea id='matrix_"+i+"_"+j+"' style='width:40px; height:40px; resize:none; margin-left:5px;'></textarea>";
 			}
 			inputArea.innerHTML += "<br>"
 		}
