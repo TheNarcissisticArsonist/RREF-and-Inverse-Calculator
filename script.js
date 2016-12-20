@@ -46,8 +46,26 @@ function updateInputDimensions() {
 		}, 0);
 	}
 }
+function getRawInput() {
+	var matrix = []
+	for(var i=0; i<rows; ++i) {
+		matrix.push([]);
+		for(var j=0; j<cols; ++j) {
+			var val = htmlMatrix[i][j].value;
+			val = Number(val);
+			if(isNaN(val)) {
+				return "FAIL";
+			}
+			else {
+				matrix[i].push(val);
+			}
+		}
+	}
+	return matrix;
+}
 function calculate() {
-
+	var rawMatrix = getRawInput();
+	console.log(rawMatrix);
 }
 
 setup();
