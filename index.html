@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>RREF and Inverse Calculator</title>
+	</head>
+	<body>
+		<p>This is a calculator which returns the reduced row-echelon form and inverse of a matrix.</p>
+		<p>Please enter the dimensions of your matrix below:</p>
+		<p>
+			<textarea id="rows" style="width:35px; height:18px; resize:none; vertical-align:middle; border:none; background-color:#eeeeee; text-align:center;">Rows</textarea>
+			X
+			<textarea id="cols" style="width:35px; height:18px; resize:none; vertical-align:middle; border:none; background-color:#eeeeee; text-align:center;">Cols</textarea>
+		</p>
+		<div id="calc" style="background-color:#ff4444; padding: 10px; display:inline-block;">Calculate</div>
+		
+		<div style="height:50px;"></div><!-- Blank Space -->
+
+		<div id="answerCont">
+			<div id="leftAnswerCont">
+				<p>RREF</p>
+				<span id="rrefAnswerField"></span>
+			</div>
+			<div id="rightAnswerCont">
+				<p>Inverse</p>
+				<span id="inverseAnswerField"></span>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="./script.js"></script>
+	</body>
+</html>
