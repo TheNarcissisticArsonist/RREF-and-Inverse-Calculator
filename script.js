@@ -63,9 +63,28 @@ function getRawInput() {
 	}
 	return matrix;
 }
+function augmentIdentity(matrix) {
+	for(var i=0; i<rows; ++i) {
+		for(var j=0; j<rows; ++j) {
+			matrix[i].push(Number(i==j));
+		}
+	}
+	return matrix;
+}
 function calculate() {
 	var rawMatrix = getRawInput();
-	console.log(rawMatrix);
+	if(rawMatrix == "FAIL") {
+		return;
+	}
+
+	rrefMatrix = rawMatrix.slice(0);
+	if(rows == cols) {
+		invMatrix = augmentIdentity(rawMatrix.slice(0));
+		console.log(invMatrix);
+	}
+	else {
+		invMatrix = "NOT_SQUARE";
+	}
 }
 
 setup();
