@@ -6,12 +6,16 @@ var calcButton;
 var inputArea;
 var givenMatrix;
 var htmlMatrix;
+var rrefAnswer;
+var invAnswer;
 
 function setup() {
 	rowInput = document.getElementById("rows");
 	colInput = document.getElementById("cols");
 	calcButton = document.getElementById("calc");
 	inputArea = document.getElementById("inputArea");
+	rrefAnswer = document.getElementById("rrefAnswerField");
+	invAnswer = document.getElementById("inverseAnswerField");
 
 	rowInput.addEventListener("input", updateInputDimensions);
 	colInput.addEventListener("input", updateInputDimensions);
@@ -78,9 +82,9 @@ function calculate() {
 	}
 
 	rrefMatrix = rawMatrix.slice(0);
+
 	if(rows == cols) {
 		invMatrix = augmentIdentity(rawMatrix.slice(0));
-		console.log(invMatrix);
 	}
 	else {
 		invMatrix = "NOT_SQUARE";
