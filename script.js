@@ -107,12 +107,13 @@ function rref(matrix) {
 	var i = 0;
 	var j = 0;
 	while(j < cols && i < rows) {
+		var onlyCol;
 		var colSum = 0;
 		for(var k=0; k<rows; ++k) {
 			colSum += rowVectors[k][j];
 		}
 		if(colSum == 0) {
-			++j;
+			onlyCol = true;
 		}
 		else {
 			var swap1 = rowVectors[i].slice(0);
@@ -128,7 +129,7 @@ function rref(matrix) {
 				}
 			}
 			if(!found) {
-				++j;
+				onlyCol = true;
 			}
 			else {
 				if(!noSwap) {
@@ -141,11 +142,19 @@ function rref(matrix) {
 					rowVectors[i][k] *= (1/c);
 				}
 
-				++i;
-				++j;
+				onlyCol = false;
 			}
 		}
+
+		if(onlyCol) {
+			++j;
+		}
+		else {
+			++i;
+			++j;
+		}
 	}
+
 
 	return rowVectors;
 }
