@@ -106,7 +106,7 @@ function rref(matrix) {
 	}
 	var i = 0;
 	var j = 0;
-	while(j < cols) {
+	while(j < cols && i < rows) {
 		var colSum = 0;
 		for(var k=0; k<rows; ++k) {
 			colSum += rowVectors[k][j];
@@ -128,6 +128,11 @@ function rref(matrix) {
 			if(!noSwap) {
 				rowVectors[i] = swap2.slice(0);
 				rowVectors[swap2Num] = swap1.slice(0);
+			}
+
+			var c = rowVectors[i][j];
+			for(var k=0; k<cols; ++k) {
+				rowVectors[i][k] *= (1/c);
 			}
 
 			++i;
