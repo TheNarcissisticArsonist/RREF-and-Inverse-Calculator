@@ -19,7 +19,7 @@ function setup() {
 
 	rowInput.addEventListener("input", updateInputDimensions);
 	colInput.addEventListener("input", updateInputDimensions);
-	calcButton.addEventListener("click", calculate);
+	calcButton.addEventListener("click", main);
 }
 function updateInputDimensions() {
 	var r = Number(rowInput.value);
@@ -75,20 +75,53 @@ function augmentIdentity(matrix) {
 	}
 	return matrix;
 }
-function calculate() {
+function main() {
 	var rawMatrix = getRawInput();
 	if(rawMatrix == "FAIL") {
 		return;
 	}
 
-	rrefMatrix = rawMatrix.slice(0);
+	var matrix = rawMatrix.slice(0);
+	var rrefMatrix = rref(matrix);
+	var rrefMatrixImage = matrixToImage(rrefMatrix);
+	rrefAnswer.innerHTML = rrefMatrixImage;
 
 	if(rows == cols) {
-		invMatrix = augmentIdentity(rawMatrix.slice(0));
+		var invMatrix = augmentIdentity(rawMatrix.slice(0));
+		var rrefInvMatrix = rref(invMatrix);
+		var inverse = extractInverse(rrefInvMatrix);
+		var inverseImage = matrixToImage(inverse);
 	}
 	else {
-		invMatrix = "NOT_SQUARE";
+		var invMatrix = "NOT_SQUARE";
+		var inverseImage = "<p>Not invertible.</p>";
 	}
+	invAnswer.innerHTML = inverseImage;
+}
+function rref(matrix) {
+	return matrix; //Temporary
+}
+function matrixToImage(matrix) {
+	if(matrix == "NOT_INVERTIBLE") {
+		return "<p>Not invertible.</p>";
+	}
+	else {
+		var url = "https://latex.codecogs.com/gif.latex?";
+		url += "\\begin{bmatrix}";
+		for(var i=0; i<rows; ++i) {
+			url += String(matrix[i][0]);
+			for(var j=1; j<cols; ++j) {
+				url += "&"
+				url += String(matrix[i][j]);
+			}
+			url += "\\\\";
+		}
+		url += "\\end{bmatrix}";
+	}
+	return "<img src='"+url+"'></img>";
+}
+function extractInverse(matrix) {
+
 }
 
 setup();
