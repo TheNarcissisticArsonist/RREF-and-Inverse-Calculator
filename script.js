@@ -117,26 +117,33 @@ function rref(matrix) {
 		else {
 			var swap1 = rowVectors[i].slice(0);
 			var noSwap;
+			var found = false;
 			for(var k=i; k<rows; ++k) {
 				if(rowVectors[k][j] != 0) {
 					var swap2 = rowVectors[k].slice(0);
 					var swap2Num = k;
 					noSwap = (k==i);
+					found = true;
 					break;
 				}
 			}
-			if(!noSwap) {
-				rowVectors[i] = swap2.slice(0);
-				rowVectors[swap2Num] = swap1.slice(0);
+			if(!found) {
+				++j;
 			}
+			else {
+				if(!noSwap) {
+					rowVectors[i] = swap2.slice(0);
+					rowVectors[swap2Num] = swap1.slice(0);
+				}
 
-			var c = rowVectors[i][j];
-			for(var k=0; k<cols; ++k) {
-				rowVectors[i][k] *= (1/c);
+				var c = rowVectors[i][j];
+				for(var k=0; k<cols; ++k) {
+					rowVectors[i][k] *= (1/c);
+				}
+
+				++i;
+				++j;
 			}
-
-			++i;
-			++j;
 		}
 	}
 
