@@ -121,7 +121,14 @@ function matrixToImage(matrix) {
 	return "<img src='"+url+"'></img>";
 }
 function extractInverse(matrix) {
-
+	var newMatrix = [];
+	for(var i=0; i<rows; ++i) {
+		newMatrix.push([]);
+		for(var j=cols; j<cols*2; ++j) {
+			newMatrix[i].push(matrix[i][j]);
+		}
+	}
+	return newMatrix;
 }
 
 setup();
