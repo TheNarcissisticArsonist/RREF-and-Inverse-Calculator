@@ -99,7 +99,42 @@ function main() {
 	invAnswer.innerHTML = inverseImage;
 }
 function rref(matrix) {
-	return matrix; //Temporary
+	var rowVectors = [];
+	for(var i=0; i<rows; ++i) {
+		rowVectors.push(matrix[i].slice(0));
+	}
+	var i = 0;
+	var j = 0;
+	while(j < cols) {
+		var colSum = 0;
+		for(var k=0; k<rows; ++k) {
+			colSum += rowVectors[k][j];
+		}
+		if(colSum == 0) {
+			++j;
+		}
+		else {
+			var swap1 = rowVectors[i].slice(0);
+			var noSwap;
+			for(var k=i; k<rows; ++k) {
+				if(rowVectors[k][j] != 0) {
+					var swap2 = rowVectors[k].slice(0);
+					var swap2Num = k;
+					noSwap = (k==i);
+					break;
+				}
+			}
+			if(!noSwap) {
+				rowVectors[i] = swap2.slice(0);
+				rowVectors[swap2Num] = swap1.slice(0);
+			}
+
+			++i;
+			++j;
+		}
+	}
+
+	return rowVectors; //Temporary
 }
 function matrixToImage(matrix) {
 	if(matrix == "NOT_INVERTIBLE") {
