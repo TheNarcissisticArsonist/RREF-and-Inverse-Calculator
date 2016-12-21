@@ -68,8 +68,9 @@ function getRawInput() {
 	return matrix;
 }
 function augmentIdentity(matrix) {
+	var len = matrix[0].length;
 	for(var i=0; i<matrix.length; ++i) {
-		for(var j=0; j<matrix[i].length; ++j) {
+		for(var j=0; j<len; ++j) {
 			matrix[i].push(Number(i==j));
 		}
 	}
@@ -203,11 +204,28 @@ function matrixToImage(matrix) {
 }
 function extractInverse(matrix) {
 	var newMatrix = [];
+	var invertible = true;
+
 	for(var i=0; i<matrix.length; ++i) {
 		newMatrix.push([]);
-		for(var j=matrix[i].length/2; j<matrix[i].length; ++j) {
+		for(var j=0; j<matrix[i].length/2; ++j) {
 			newMatrix[i].push(matrix[i][j]);
+			if(Number(i==j) != newMatrix[i][j]) {
+				invertible = false;
+			}
 		}
+	}
+	newMatrix = [];
+	if(invertible) {
+		for(var i=0; i<matrix.length; ++i) {
+			newMatrix.push([]);
+			for(var j=matrix[i].length/2; j<matrix[i].length; ++j) {
+				newMatrix[i].push(matrix[i][j]);
+			}
+		}
+	}
+	else {
+		newMatrix = "NOT_INVERTIBLE";
 	}
 	return newMatrix;
 }
