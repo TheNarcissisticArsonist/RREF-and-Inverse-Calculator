@@ -99,6 +99,7 @@ function main() {
 	invAnswer.innerHTML = inverseImage;
 }
 function rref(matrix) {
+	//Conceptually based off of rref in general, and https://www.csun.edu/~panferov/math262/262_rref.pdf
 	var rowVectors = [];
 	for(var i=0; i<rows; ++i) {
 		rowVectors.push(matrix[i].slice(0));
@@ -134,7 +135,7 @@ function rref(matrix) {
 		}
 	}
 
-	return rowVectors; //Temporary
+	return rowVectors;
 }
 function matrixToImage(matrix) {
 	if(matrix == "NOT_INVERTIBLE") {
