@@ -68,8 +68,8 @@ function getRawInput() {
 	return matrix;
 }
 function augmentIdentity(matrix) {
-	for(var i=0; i<rows; ++i) {
-		for(var j=0; j<rows; ++j) {
+	for(var i=0; i<matrix.length; ++i) {
+		for(var j=0; j<matrix[i].length; ++j) {
 			matrix[i].push(Number(i==j));
 		}
 	}
@@ -101,15 +101,15 @@ function main() {
 function rref(matrix) {
 	//Conceptually based off of rref in general, and https://www.csun.edu/~panferov/math262/262_rref.pdf
 	var rowVectors = [];
-	for(var i=0; i<rows; ++i) {
+	for(var i=0; i<matrix.length; ++i) {
 		rowVectors.push(matrix[i].slice(0));
 	}
 	var i = 0;
 	var j = 0;
-	while(j < cols && i < rows) {
+	while(i < rowVectors.length && j < rowVectors[i].length) {
 		var onlyCol;
 		var colSum = 0;
-		for(var k=0; k<rows; ++k) {
+		for(var k=0; k<rowVectors.length; ++k) {
 			colSum += rowVectors[k][j];
 		}
 		if(colSum == 0) {
@@ -119,7 +119,7 @@ function rref(matrix) {
 			var swap1 = rowVectors[i].slice(0);
 			var noSwap;
 			var found = false;
-			for(var k=i; k<rows; ++k) {
+			for(var k=i; k<rowVectors.length; ++k) {
 				if(rowVectors[k][j] != 0) {
 					var swap2 = rowVectors[k].slice(0);
 					var swap2Num = k;
@@ -138,11 +138,23 @@ function rref(matrix) {
 				}
 
 				var c = rowVectors[i][j];
-				for(var k=0; k<cols; ++k) {
+				for(var k=0; k<rowVectors[i].length; ++k) {
 					rowVectors[i][k] *= (1/c);
 				}
 
 				onlyCol = false;
+			}
+		}
+
+		for(var k=0; k<rowVectors.length; ++k) {
+			if(k != i) {
+				var x = rowVectors[k][j];
+				if(x != 0) {
+					for(var l=0; l<rowVectors[k].length; ++l) {
+						rowVectors[k][l] *= (1/x);
+						rowVectors[k][l] -= rowVectors[i][l];
+					}
+				}
 			}
 		}
 
@@ -154,7 +166,19 @@ function rref(matrix) {
 			++j;
 		}
 	}
-
+	for(var i=0; i<rowVectors.length; ++i) {
+		var x = 0;
+		var j = 0;
+		while(x == 0 && j<rowVectors[i].length) {
+			x = rowVectors[i][j];
+			++j;
+		}
+		if(x != 0) {
+			for(var j=0; j<rowVectors[i].length; ++j) {
+				rowVectors[i][j] *= (1/x);
+			}
+		}
+	}
 
 	return rowVectors;
 }
@@ -165,9 +189,9 @@ function matrixToImage(matrix) {
 	else {
 		var url = "https://latex.codecogs.com/gif.latex?";
 		url += "\\begin{bmatrix}";
-		for(var i=0; i<rows; ++i) {
+		for(var i=0; i<matrix.length; ++i) {
 			url += String(matrix[i][0]);
-			for(var j=1; j<cols; ++j) {
+			for(var j=1; j<matrix[i].length; ++j) {
 				url += "&"
 				url += String(matrix[i][j]);
 			}
@@ -179,9 +203,9 @@ function matrixToImage(matrix) {
 }
 function extractInverse(matrix) {
 	var newMatrix = [];
-	for(var i=0; i<rows; ++i) {
+	for(var i=0; i<matrix.length; ++i) {
 		newMatrix.push([]);
-		for(var j=cols; j<cols*2; ++j) {
+		for(var j=matrix[i].length/2; j<matrix[i].length; ++j) {
 			newMatrix[i].push(matrix[i][j]);
 		}
 	}
