@@ -50,6 +50,12 @@ function updateInputDimensions() {
 			for(var i=0; i<rows; ++i) {
 				for(var j=0; j<cols; ++j) {
 					htmlMatrix[i].push(document.getElementById("matrix_"+i+"_"+j));
+					htmlMatrix[i][j].addEventListener("focus", function(event) {
+						this.select();
+					});
+					htmlMatrix[i][j].addEventListener("mouseUp", function(event) {
+						event.preventDefault();
+					});
 				}
 			}
 		}, 0);
