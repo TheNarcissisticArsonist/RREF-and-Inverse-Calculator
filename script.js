@@ -8,6 +8,10 @@ var givenMatrix;
 var htmlMatrix;
 var rrefAnswer;
 var invAnswer;
+var detAnswer;
+var detProduct;
+
+var epsilon = 0.000001;
 
 function setup() {
 	rowInput = document.getElementById("rows");
@@ -16,6 +20,7 @@ function setup() {
 	inputArea = document.getElementById("inputArea");
 	rrefAnswer = document.getElementById("rrefAnswerField");
 	invAnswer = document.getElementById("inverseAnswerField");
+	detAnswer = document.getElementById("determinantAnswerField");
 
 	rowInput.addEventListener("input", updateInputDimensions);
 	colInput.addEventListener("input", updateInputDimensions);
@@ -82,10 +87,18 @@ function main() {
 		return;
 	}
 
+	detProduct = 1;
+
 	var matrix = rawMatrix.slice(0);
 	var rrefMatrix = rref(matrix);
 	var rrefMatrixImage = matrixToImage(rrefMatrix);
 	rrefAnswer.innerHTML = rrefMatrixImage;
+
+	var determinant = 1;
+	for(var i=0; i<rows; ++i) {
+		determinant *= rrefMatrix[i][i];
+	}
+	determinant *= detProduct;
 
 	if(rows == cols) {
 		var invMatrix = augmentIdentity(rawMatrix.slice(0));
@@ -96,8 +109,10 @@ function main() {
 	else {
 		var invMatrix = "NOT_SQUARE";
 		var inverseImage = "<p>Not invertible.</p>";
+		determinant = "N/A";
 	}
 	invAnswer.innerHTML = inverseImage;
+	detAnswer.innerHTML = determinant;
 }
 function rref(matrix) {
 	//Conceptually based off of rref in general, and https://www.csun.edu/~panferov/math262/262_rref.pdf
@@ -136,12 +151,14 @@ function rref(matrix) {
 				if(!noSwap) {
 					rowVectors[i] = swap2.slice(0);
 					rowVectors[swap2Num] = swap1.slice(0);
+					detProduct *= -1;
 				}
 
 				var c = rowVectors[i][j];
 				for(var k=0; k<rowVectors[i].length; ++k) {
 					rowVectors[i][k] *= (1/c);
 				}
+				detProduct *= c;
 
 				onlyCol = false;
 			}
@@ -155,6 +172,7 @@ function rref(matrix) {
 						rowVectors[k][l] *= (1/x);
 						rowVectors[k][l] -= rowVectors[i][l];
 					}
+					detProduct *= x;
 				}
 			}
 		}
@@ -178,6 +196,7 @@ function rref(matrix) {
 			for(var j=0; j<rowVectors[i].length; ++j) {
 				rowVectors[i][j] *= (1/x);
 			}
+			detProduct *= x;
 		}
 	}
 
@@ -210,7 +229,7 @@ function extractInverse(matrix) {
 		newMatrix.push([]);
 		for(var j=0; j<matrix[i].length/2; ++j) {
 			newMatrix[i].push(matrix[i][j]);
-			if(Number(i==j) != newMatrix[i][j]) {
+			if(Math.abs(Number(i==j) - newMatrix[i][j]) > epsilon) {
 				invertible = false;
 			}
 		}
